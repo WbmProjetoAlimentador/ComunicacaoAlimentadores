@@ -31,7 +31,7 @@ Passe o IP do módulo mestre no body raw seguindo esse exemplo de JSON
 
 ### Endpoint do Alimentador
 ```
-ws://localhost:3000/ws/alimentador
+ws://localhost:3000/ws/1
 ```
 ```
 {
@@ -74,11 +74,11 @@ ws://localhost:3000/ws/erros
         "QtdErro5": 0,
         "QtdErro6": 0,
         "QtdErro7": 0,
-        "ComErro1": 3, 6, 7, 9,
+        "ComErro1": 3,
         "ComErro2": 4,
-        "ComErro3": 3, 5,
+        "ComErro3": 3,
         "ComErro4": 2,
-        "ComErro5": 5, 6,
+        "ComErro5": 5,
         "ComErro6": 7,
         "ComErro7": 13
     }
@@ -129,13 +129,13 @@ ws://localhost:3000/ws/todos
             "QtdErro5": 2,
             "QtdErro6": 1,
             "QtdErro7": 3,
-            "ComErro1": 2, 4, 5,
+            "ComErro1": 2,
             "ComErro2": 3,
             "ComErro3": 4,
             "ComErro4": 6,
             "ComErro5": 9,
             "ComErro6": 2,
-            "ComErro7": 3, 5
+            "ComErro7": 3
         },
         "monitor": {
             "Umidade": 3,
