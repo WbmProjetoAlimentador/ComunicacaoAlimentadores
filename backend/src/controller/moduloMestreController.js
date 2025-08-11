@@ -30,6 +30,7 @@ class moduloMestreController {
       response.json({
         success: true,
         message: "Enviado com Sucesso!",
+        ip: ip,
       });
     } catch {
       response.status(500).json({

@@ -4,6 +4,7 @@ import moduloMestreController, {
   ultimoPorIdControllerWS,
   errosIdWS,
   monitorWS,
+  todosWS,
 } from "../controller/webSocketController.js";
 
 export default function RouterWS(server) {
@@ -41,6 +42,11 @@ export default function RouterWS(server) {
         const id = partes[2];
         ws.send(`Conectado ao WebSocket do alimentador ${id}`);
         monitorWS(ws, id);
+      });
+    } else if (pathname === "/todos") {
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        ws.send("Todos os campos com leitura");
+        todosWS(ws);
       });
     } else {
       socket.destroy();

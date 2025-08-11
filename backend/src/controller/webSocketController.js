@@ -63,7 +63,7 @@ export function errosIdWS(ws, id) {
   ws.on("close", () => clearTimeout(interval));
 }
 
-export function   monitorWS(ws, id) {
+export function monitorWS(ws, id) {
   if (!id || isNaN(Number(id))) {
     ws.send(JSON.stringify({ erros: "ID do alimentador errado" }));
     ws.close();
@@ -78,5 +78,20 @@ export function   monitorWS(ws, id) {
       ws.send(JSON.stringify({ erro: "erro ao ler a temperatura e umidade" }));
     }
   });
+  ws.on("close", () => clearInterval(interval));
+}
+
+export function todosWS(ws) {
+  const interval = setInterval(async () => {
+    try {
+      const todos = await moduloMestre.lerTodosCampos();
+      const isPreenchido = Object.values(todos).every(
+        (obj) => typeof obj === "object" && Object.keys(obj).length > 0
+      );
+      if (isPreenchido) {
+        ws.send(JSON.stringify(todos));
+      }
+    } catch (err) {}
+  }, 2000);
   ws.on("close", () => clearInterval(interval));
 }

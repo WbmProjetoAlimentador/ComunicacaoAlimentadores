@@ -2,7 +2,7 @@ import ModbusRTU from "modbus-serial";
 const client = new ModbusRTU();
 
 const config = {
-  ip: "192.168.0.250",
+  ip: "192.168.0.11",
   port: 502,
   id: 99,
   tempo: 2000,
@@ -100,9 +100,20 @@ async function lerTodosCampos() {
       });
     });
 
+    console.log("lerTodosCampos - dadosFormatados:", dadosFormatados);
     return dadosFormatados;
   } catch (err) {
-    console.error("Erro de conexão", err.message);
+    console.log("lerTodosCampos - erro:", err.message);
+    console.log("lerTodosCampos - retornando vazio:", {
+      alimentador: {},
+      erros: {},
+      monitor: {},
+    });
+    return {
+      alimentador: {},
+      erros: {},
+      monitor: {},
+    };
   }
 }
 
@@ -111,7 +122,9 @@ async function lerAlimentador(id) {
   const encontrado = pares.find(
     ([chave, item]) => Number(item.alimentador?.id) === Number(id)
   );
-  return encontrado ? encontrado[1] : null;
+  const resultado = encontrado ? encontrado[1] : {};
+  console.log("lerAlimentador - id:", id, "resultado:", resultado);
+  return resultado;
 }
 
 async function lerErrosAlimentador(id) {
@@ -217,7 +230,6 @@ async function escreverDispositivoInterno(id, config, valor) {
 }
 
 console.log("Iniciando cliente Modulo Mestre...");
-setInterval(lerTodosCampos, config.tempo);
 
 process.on("SIGINT", () => {
   console.log("\nDesconectando...");
