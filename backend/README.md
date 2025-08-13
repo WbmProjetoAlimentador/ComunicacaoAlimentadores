@@ -149,11 +149,25 @@ http://localhost:3000/moduloMestre/alimentador
 ### Endpoint para mandar comando (manual)
 ```
 http://localhost:3000/moduloMestre/alimentador
-``` 
+```
+### Body
 ```
 {
     "id": 1,
     "setpoint":100,
+}
+```
+### Resposta
+```
+ {
+    "success": true,
+    "message": "Enviado com Sucesso!",
+    "data": {
+        "campos": {
+            "id": 1,
+            "setpoint": 100,
+        }
+    }
 }
 ```
 
