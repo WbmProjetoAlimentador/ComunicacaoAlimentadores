@@ -45,7 +45,7 @@ export default function RouterWS(server) {
       });
     } else if (pathname === "/todos") {
       wss.handleUpgrade(request, socket, head, (ws) => {
-        ws.send("Todos os campos com leitura");
+        ws.send("Conexão estabelecida");
         todosWS(ws);
       });
     } else {

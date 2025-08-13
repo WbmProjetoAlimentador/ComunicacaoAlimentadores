@@ -100,21 +100,8 @@ async function lerTodosCampos() {
       });
     });
 
-    console.log("lerTodosCampos - dadosFormatados:", dadosFormatados);
     return dadosFormatados;
-  } catch (err) {
-    console.log("lerTodosCampos - erro:", err.message);
-    console.log("lerTodosCampos - retornando vazio:", {
-      alimentador: {},
-      erros: {},
-      monitor: {},
-    });
-    return {
-      alimentador: {},
-      erros: {},
-      monitor: {},
-    };
-  }
+  } catch {}
 }
 
 async function lerAlimentador(id) {
