@@ -2,7 +2,7 @@ import ModbusRTU from "modbus-serial";
 const client = new ModbusRTU();
 
 const config = {
-  ip: "192.168.0.11",
+  ip: "192.168.0.195",
   port: 502,
   id: 99,
   tempo: 2000,
@@ -10,7 +10,7 @@ const config = {
 
 const mapa_leitura = {
   alimentador: {
-    address: 7,
+    address: 20,
     fields: [
       "id",
       "horaLiga",
@@ -22,38 +22,30 @@ const mapa_leitura = {
       "posicao",
       "hora",
       "minuto",
-      "ciclos",
+      "quantCiclos",
       "quantReservatorio",
-    ],
-  },
-  erros: {
-    address: 19,
-    fields: [
-      "qtdErro1",
-      "qtdErro2",
-      "qtdErro3",
-      "qtdErro4",
-      "qtdErro5",
-      "qtdErro6",
-      "qtdErro7",
-      "comErro1",
-      "comErro2",
-      "comErro3",
-      "comErro4",
-      "comErro5",
-      "comErro6",
-      "comErro7",
+      "modo",
     ],
   },
   monitor: {
-    address: 33,
+    address: 40,
     fields: ["umidade", "temperatura"],
   },
 };
 
 const mapa_escrita = {
   address: 0,
-  fields: ["id", "horaLiga", "horaDesliga", "setpoint", "tempoCiclo"],
+  fields: [
+    "id",
+    "horaLiga",
+    "horaDesliga",
+    "setPointAutomatico",
+    "tempoCiclo",
+    "modo",
+    "setPointManual",
+    "hora",
+    "minuto",
+  ],
 };
 
 async function conectarModuloMestre() {
@@ -86,22 +78,30 @@ async function setIpModuloMestre(ip) {
 async function lerTodosCampos() {
   try {
     if (!client.isOpen) await conectarModuloMestre();
-    const respostaGeral = await client.readHoldingRegisters(7, 28);
-    const dadosFormatados = {};
 
-    Object.entries(mapa_leitura).forEach(([nomeDispositivo, config]) => {
-      dadosFormatados[nomeDispositivo] = {};
+    const dadosFormatados = { alimentador: {}, monitor: {} };
 
-      config.fields.forEach((campo, index) => {
-        const endereco = config.address + index;
-        const indice = endereco - 7;
-        dadosFormatados[nomeDispositivo][campo.trim()] =
-          respostaGeral.data[indice];
-      });
+    // Leitura do alimentador
+    const addrAlim = mapa_leitura.alimentador.address;
+    const lenAlim = mapa_leitura.alimentador.fields.length;
+    const respAlim = await client.readHoldingRegisters(addrAlim, lenAlim);
+    mapa_leitura.alimentador.fields.forEach((campo, i) => {
+      dadosFormatados.alimentador[campo.trim()] = respAlim.data?.[i] ?? null;
+    });
+
+    // Leitura do monitor (regs 40 e 41)
+    const addrMon = mapa_leitura.monitor.address;
+    const lenMon = mapa_leitura.monitor.fields.length;
+    const respMon = await client.readHoldingRegisters(addrMon, lenMon);
+    mapa_leitura.monitor.fields.forEach((campo, i) => {
+      dadosFormatados.monitor[campo.trim()] = respMon.data?.[i] ?? null;
     });
 
     return dadosFormatados;
-  } catch {}
+  } catch (err) {
+    console.log("Erro ao ler campos:", err.message);
+    return { alimentador: {}, monitor: {} };
+  }
 }
 
 async function lerAlimentador(id) {
