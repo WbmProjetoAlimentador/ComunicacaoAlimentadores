@@ -25,8 +25,6 @@ Passe o IP do módulo mestre no body raw seguindo esse exemplo de JSON
 }
 ```
 
-
-
 ## WebSocket endpoint
 
 ### Endpoint do Alimentador
@@ -34,42 +32,28 @@ Passe o IP do módulo mestre no body raw seguindo esse exemplo de JSON
 ws://localhost:3000/alimentador/1
 ```
 ```
- "data": {
+{
+    "data": {
         "alimentador": {
             "id": 1,
-            "horaLiga": 8,
-            "horaDesliga": 19,
-            "setPoint": 50,
-            "tempoCiclo": 120,
-            "temperatura": 25,
+            "horaLiga": 0,
+            "horaDesliga": 0,
+            "setPoint": 0,
+            "tempoCiclo": 0,
+            "temperatura": 0,
             "erro": 0,
-            "posicao": 50,
-            "hora": 12,
-            "minuto": 20,
-            "ciclos": 120,
-            "quantReservatorio": 2500
-        },
-        "erros": {
-            "qtdErro1": 0,
-            "qtdErro2": 0,
-            "qtdErro3": 0,
-            "qtdErro4": 0,
-            "qtdErro5": 0,
-            "qtdErro6": 0,
-            "qtdErro7": 0,
-            "comErro1": 0,
-            "comErro2": 0,
-            "comErro3": 0,
-            "comErro4": 0,
-            "comErro5": 0,
-            "comErro6": 0,
-            "comErro7": 0
+            "posicao": 0,
+            "hora": 0,
+            "minuto": 0,
+            "quantCiclos": 0,
+            "quantReservatorio": 0,
+            "modo": 0
         },
         "monitor": {
             "umidade": 0,
             "temperatura": 0
         },
-        "timetamp": "2025-08-07T16:41:06.584Z"
+        "timetamp": "2025-08-22T14:59:26.792Z"
     }
 }
 ```
@@ -81,34 +65,19 @@ ws://localhost:3000/todos
 ```
 {
     "alimentador": {
-        "id": 2, 
-        "horaLiga": 13,
-        "horaDesliga": 12,
-        "setPoint": 121,
-        "tempoCiclo": 57,
-        "temperatura": 13,
-        "erro": 3,
-        "posicao": 46,
-        "hora": 5,
-        "minuto": 31,
-        "ciclos": 110,
-        "quantReservatorio": 1981
-    },
-    "erros": {
-        "qtdErro1": 0,
-        "qtdErro2": 0,
-        "qtdErro3": 0,
-        "qtdErro4": 0,
-        "qtdErro5": 0,
-        "qtdErro6": 0,
-        "qtdErro7": 0,
-        "comErro1": 0,
-        "comErro2": 0,
-        "comErro3": 0,
-        "comErro4": 0,
-        "comErro5": 0,
-        "comErro6": 0,
-        "comErro7": 0
+        "id": 2,
+        "horaLiga": 0,
+        "horaDesliga": 0,
+        "setPoint": 0,
+        "tempoCiclo": 0,
+        "temperatura": 0,
+        "erro": 0,
+        "posicao": 0,
+        "hora": 0,
+        "minuto": 0,
+        "quantCiclos": 0,
+        "quantReservatorio": 0,
+        "modo": 0
     },
     "monitor": {
         "umidade": 0,
@@ -120,15 +89,16 @@ ws://localhost:3000/todos
 ```
 http://localhost:3000/moduloMestre/alimentador
 ```
-### Body
+### Corpo
 ```
 {
-    "id": 1,
+    "id":1,
     "horaLiga": 9,
-    "horaDesliga": 19,
-    "setpoint":50,
-    "tempoCiclo": 10
-}
+    "horaDesliga": 18,
+    "setPointAutomatico": 50,
+    "tempoCiclo": 120,
+    "modo": 1
+}   
 ```
 ### Resposta
 ```
@@ -139,9 +109,10 @@ http://localhost:3000/moduloMestre/alimentador
         "campos": {
             "id": 1,
             "horaLiga": 9,
-            "horaDesliga": 19,
-            "setpoint": 50,
-            "tempoCiclo": 10
+            "horaDesliga": 18,
+            "setPointAutomatico": 50,
+            "tempoCiclo": 120,
+            "modo": 1
         }
     }
 }
@@ -150,28 +121,30 @@ http://localhost:3000/moduloMestre/alimentador
 ```
 http://localhost:3000/moduloMestre/alimentador
 ```
-### Body
+### Corpo
 ```
 {
-    "id": 1,
-    "setpoint":100,
-}
+    "id":1,
+    "modo": 2,
+    "setPointManual": 100
+}   
 ```
 ### Resposta
 ```
- {
+{
     "success": true,
     "message": "Enviado com Sucesso!",
     "data": {
         "campos": {
             "id": 1,
-            "setpoint": 100,
+            "modo": 2,
+            "setPointManual": 100
         }
     }
 }
 ```
 
-# Legendas
+# Legendas de Erros
 ```
 1 - Motor não funciona
 2 - Motor travou
